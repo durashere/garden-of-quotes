@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const Quote = ({ text, author, genre }) => {
   return (
@@ -11,21 +11,19 @@ const Quote = ({ text, author, genre }) => {
           </span>
           <span className="relative italic text-gray-600">{text}</span>
         </div>
-        {author && (
-          <div className="pb-4 pr-6 text-right">
+        <div className="pb-4 pr-6 leading-3 text-right">
+          {author && (
             <Link href={`/authors/${author}`}>
-              <span className="text-sm font-medium cursor-pointer">{`- ${author}`}</span>
+              <span className="block text-sm font-medium text-gray-700 cursor-pointer">{`- ${author}`}</span>
             </Link>
-          </div>
-        )}
-      </div>
-      {genre && (
-        <div className="mr-4 text-right">
-          <Link href={`/genres/${genre}`}>
-            <span className="text-sm cursor-pointer">more from {genre}</span>
-          </Link>
+          )}
+          {genre && (
+            <Link href={`/genres/${genre}`}>
+              <span className="text-sm text-gray-600 cursor-pointer">{`#${genre}`}</span>
+            </Link>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

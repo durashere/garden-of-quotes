@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 const ListLayout = ({ children, title }) => {
   return (

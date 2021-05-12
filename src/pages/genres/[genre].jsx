@@ -1,8 +1,9 @@
-import axios from 'axios';
-import Quote from '@/modules/quotes/Quote';
+import PropTypes from 'prop-types';
+
 import DefaultLayout from '@/layouts/ListLayout';
+import getQuotesByGenre from '@/api/getQuotesByGenre';
+import Quote from '@/modules/quotes/Quote';
 import QuotesList from '@/modules/quotes/QuotesList';
-import PropTypes, { arrayOf } from 'prop-types';
 
 const GenrePage = ({ quotes: { data }, params: { genre } }) => {
   return (
@@ -20,26 +21,19 @@ const GenrePage = ({ quotes: { data }, params: { genre } }) => {
 
 GenrePage.propTypes = {
   quotes: PropTypes.shape({
-    data: arrayOf(PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))),
+    data: PropTypes.arrayOf(
+      PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+    ),
   }).isRequired,
   params: PropTypes.shape({ genre: PropTypes.string }).isRequired,
 };
 
-export default GenrePage;
-
 export const getServerSideProps = async (context) => {
-  const fetchQuotesByGenre = async () => {
-    const { data } = await axios.get('https://quote-garden.herokuapp.com/api/v3/quotes', {
-      params: {
-        genre: context.params.genre,
-      },
-    });
-    return data;
-  };
-
-  const quotes = await fetchQuotesByGenre();
+  const quotes = await getQuotesByGenre(context.params.genre);
 
   return {
     props: { quotes, params: context.params },
   };
 };
+
+export default GenrePage;
