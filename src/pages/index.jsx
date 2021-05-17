@@ -1,33 +1,19 @@
-import PropTypes from 'prop-types';
-
 import CenterLayout from '@/layouts/CenterLayout';
-import getRandomQuote from '@/api/getRandomQuote';
 import Quote from '@/modules/quotes/Quote';
+import useRandomQuote from '@/modules/quotes/hooks/useRandomQuote';
+import SkeletonQuote from '@/modules/quotes/QuoteSkeleton';
 
-const IndexPage = ({ quote: { quoteText, quoteAuthor, quoteGenre } }) => {
+const IndexPage = () => {
+  const { quote } = useRandomQuote();
+
   return (
     <CenterLayout>
-      <Quote text={quoteText} author={quoteAuthor} genre={quoteGenre} />
+      {!quote && <SkeletonQuote />}
+      {quote && (
+        <Quote text={quote.quoteText} author={quote.quoteAuthor} genre={quote.quoteGenre} />
+      )}
     </CenterLayout>
   );
 };
-
-IndexPage.propTypes = {
-  quote: PropTypes.shape({
-    quoteText: PropTypes.string,
-    quoteAuthor: PropTypes.string,
-    quoteGenre: PropTypes.string,
-  }).isRequired,
-};
-
-export async function getServerSideProps() {
-  const quote = await getRandomQuote();
-
-  return {
-    props: {
-      quote,
-    },
-  };
-}
 
 export default IndexPage;

@@ -1,39 +1,43 @@
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-import DefaultLayout from '@/layouts/ListLayout';
-import getQuotesByAuthor from '@/api/getQuotesByAuthor';
+import ListLayout from '@/layouts/ListLayout';
 import Quote from '@/modules/quotes/Quote';
 import QuotesList from '@/modules/quotes/QuotesList';
+import QuotesListSkeleton from '@/modules/quotes/QuotesListSkeleton';
+import useQuotesByAuthor from '@/modules/quotes/hooks/useQuotesByAuthor';
 
-const AuthorPage = ({ quotes: { data }, params: { author } }) => {
+const AuthorPage = () => {
+  const {
+    query: { author },
+  } = useRouter();
+  const { quotes } = useQuotesByAuthor();
+
   return (
-    <DefaultLayout title={author}>
-      <QuotesList>
-        {data
-          .filter((quote) => quote.quoteAuthor === author)
-          .map((quote) => (
-            <Quote key={quote._id} text={quote.quoteText} genre={quote.quoteGenre} />
-          ))}
-      </QuotesList>
-    </DefaultLayout>
+    <ListLayout>
+      {author && quotes ? (
+        <h1 className="flex gap-4 mt-4 text-4xl font-medium text-gray-600 capitalize">
+          <Link href="/">
+            <span className="text-4xl cursor-pointer material-icons">chevron_left</span>
+          </Link>
+          {author}
+        </h1>
+      ) : (
+        <div className="w-4/6 h-10 mt-4 bg-gray-400 rounded animate-pulse" />
+      )}
+      {quotes ? (
+        <QuotesList>
+          {quotes
+            .filter(({ quoteAuthor }) => quoteAuthor === author)
+            .map(({ _id, quoteText, quoteGenre }) => (
+              <Quote key={_id} text={quoteText} genre={quoteGenre} />
+            ))}
+        </QuotesList>
+      ) : (
+        <QuotesListSkeleton />
+      )}
+    </ListLayout>
   );
-};
-
-AuthorPage.propTypes = {
-  quotes: PropTypes.shape({
-    data: PropTypes.arrayOf(
-      PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
-    ),
-  }).isRequired,
-  params: PropTypes.shape({ author: PropTypes.string }).isRequired,
-};
-
-export const getServerSideProps = async (context) => {
-  const quotes = await getQuotesByAuthor(context.params.author);
-
-  return {
-    props: { quotes, params: context.params },
-  };
 };
 
 export default AuthorPage;

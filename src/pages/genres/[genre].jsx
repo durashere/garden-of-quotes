@@ -1,39 +1,44 @@
-import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
-import DefaultLayout from '@/layouts/ListLayout';
-import getQuotesByGenre from '@/api/getQuotesByGenre';
+import ListLayout from '@/layouts/ListLayout';
 import Quote from '@/modules/quotes/Quote';
 import QuotesList from '@/modules/quotes/QuotesList';
+import QuotesListSkeleton from '@/modules/quotes/QuotesListSkeleton';
+import useQuotesByGenre from '@/modules/quotes/hooks/useQuotesByGenre';
 
-const GenrePage = ({ quotes: { data }, params: { genre } }) => {
+const GenrePage = () => {
+  const {
+    query: { genre },
+  } = useRouter();
+  const { quotes } = useQuotesByGenre();
+
   return (
-    <DefaultLayout title={genre}>
-      <QuotesList>
-        {data
-          .filter((quote) => quote.quoteGenre === genre)
-          .map((quote) => (
-            <Quote key={quote._id} text={quote.quoteText} author={quote.quoteAuthor} />
-          ))}
-      </QuotesList>
-    </DefaultLayout>
+    <ListLayout>
+      {genre && quotes ? (
+        <h1 className="flex gap-4 mt-4 text-4xl font-medium text-gray-600 capitalize">
+          <Link href="/">
+            <span className="text-4xl cursor-pointer material-icons">chevron_left</span>
+          </Link>
+          {genre}
+        </h1>
+      ) : (
+        <div className="w-4/6 h-10 mt-4 bg-gray-400 rounded animate-pulse" />
+      )}
+
+      {quotes ? (
+        <QuotesList>
+          {quotes
+            .filter(({ quoteGenre }) => quoteGenre === genre)
+            .map(({ _id, quoteText, quoteAuthor }) => (
+              <Quote key={_id} text={quoteText} author={quoteAuthor} />
+            ))}
+        </QuotesList>
+      ) : (
+        <QuotesListSkeleton />
+      )}
+    </ListLayout>
   );
-};
-
-GenrePage.propTypes = {
-  quotes: PropTypes.shape({
-    data: PropTypes.arrayOf(
-      PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
-    ),
-  }).isRequired,
-  params: PropTypes.shape({ genre: PropTypes.string }).isRequired,
-};
-
-export const getServerSideProps = async (context) => {
-  const quotes = await getQuotesByGenre(context.params.genre);
-
-  return {
-    props: { quotes, params: context.params },
-  };
 };
 
 export default GenrePage;
