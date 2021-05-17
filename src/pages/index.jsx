@@ -14,6 +14,7 @@ const IndexPage = () => {
         <title>Garden of Quotes</title>
       </Head>
       <div className="w-full text-center">
+        <h1 className="block pb-8 text-6xl text-gray-600 font-berk">Garden of Quotes</h1>
         {loading && <SkeletonQuote />}
         {!loading && (
           <Quote text={quote.quoteText} author={quote.quoteAuthor} genre={quote.quoteGenre} />
@@ -21,9 +22,9 @@ const IndexPage = () => {
         <button
           type="submit"
           onClick={getNewQuote}
-          className="px-4 py-2 mt-4 text-xl font-medium text-gray-600 bg-gray-300 shadow-md focus:outline-none rounded-xl"
+          className="w-full px-4 py-2 mt-8 text-xl font-medium text-gray-600 border-t-2 border-b-2 focus:outline-none rounded-xl"
         >
-          GET NEW
+          More
         </button>
       </div>
     </CenterLayout>

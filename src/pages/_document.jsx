@@ -14,9 +14,12 @@ class Document extends NextDocument {
             href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap"
             rel="stylesheet"
           />
-
           <link
             href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap"
             rel="stylesheet"
           />
         </Head>

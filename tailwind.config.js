@@ -6,6 +6,7 @@ module.exports = {
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],
       secular: ['Secular One', 'sans-serif'],
+      berk: ['Berkshire Swash', 'cursive'],
     },
     extend: {},
   },
