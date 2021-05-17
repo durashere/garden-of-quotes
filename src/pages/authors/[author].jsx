@@ -20,6 +20,7 @@ const AuthorPage = () => {
       <ListLayout>
         <Head>
           <title>Garden of Quotes</title>
+          <meta name="description" content={`Some ${author} quotes.`} />
         </Head>
         <div className="w-4/6 h-10 mt-4 bg-gray-400 rounded animate-pulse" />
         <QuotesListSkeleton />

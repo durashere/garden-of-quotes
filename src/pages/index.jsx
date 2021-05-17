@@ -12,6 +12,7 @@ const IndexPage = () => {
     <CenterLayout>
       <Head>
         <title>Garden of Quotes</title>
+        <meta name="description" content="Randomly generated quote." />
       </Head>
       <div className="w-full text-center">
         <h1 className="block pb-8 text-6xl text-gray-600 font-berk">Garden of Quotes</h1>
