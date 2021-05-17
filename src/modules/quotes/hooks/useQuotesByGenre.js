@@ -4,22 +4,25 @@ import { useRouter } from 'next/router';
 import getQuotesByGenre from '@/api/getQuotesByGenre';
 
 const useQuotesByGenre = () => {
-  const router = useRouter();
+  const {
+    query: { genre },
+  } = useRouter();
 
   const [quotes, setQuotes] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (router.query.genre) {
+    if (genre) {
       const fetchQuote = async () => {
-        const genreQuotes = await getQuotesByGenre(router.query.genre);
+        const genreQuotes = await getQuotesByGenre(genre);
         setQuotes(genreQuotes.data);
+        setLoading(false);
       };
-
       fetchQuote();
     }
-  }, [router.query.genre]);
+  }, [genre]);
 
-  return { quotes };
+  return { quotes, loading };
 };
 
 export default useQuotesByGenre;

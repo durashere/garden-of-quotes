@@ -4,22 +4,26 @@ import { useRouter } from 'next/router';
 import getQuotesByAuthor from '@/api/getQuotesByAuthor';
 
 const useQuotesByAuthor = () => {
-  const router = useRouter();
+  const {
+    query: { author },
+  } = useRouter();
 
   const [quotes, setQuotes] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (router.query.author) {
+    if (author) {
       const fetchQuote = async () => {
-        const authorQuotes = await getQuotesByAuthor(router.query.author);
+        const authorQuotes = await getQuotesByAuthor(author);
         setQuotes(authorQuotes.data);
+        setLoading(false);
       };
 
       fetchQuote();
     }
-  }, [router.query.author]);
+  }, [author]);
 
-  return { quotes };
+  return { quotes, loading };
 };
 
 export default useQuotesByAuthor;
