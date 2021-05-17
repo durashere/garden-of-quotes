@@ -6,21 +6,33 @@ const useRandomQuote = () => {
   const [quote, setQuote] = useState();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchQuote = async () => {
-      const randomQuote = await getRandomQuote();
-      setQuote(randomQuote);
-      setLoading(false);
-    };
+  const loadQuote = () => {
+    setLoading(true);
+    const existingQuote = localStorage.getItem('randomQuote');
+    setQuote(JSON.parse(existingQuote));
+    setLoading(false);
+  };
 
-    fetchQuote();
+  const fetchAndSaveQuote = async () => {
+    setLoading(true);
+    const fetchedQuote = await getRandomQuote();
+    localStorage.setItem('randomQuote', JSON.stringify(fetchedQuote));
+    setQuote(fetchedQuote);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem('randomQuote') !== null) {
+      loadQuote();
+    }
+
+    if (localStorage.getItem('randomQuote') === null) {
+      fetchAndSaveQuote();
+    }
   }, []);
 
   const getNewQuote = async () => {
-    setLoading(true);
-    const randomQuote = await getRandomQuote();
-    setQuote(randomQuote);
-    setLoading(false);
+    fetchAndSaveQuote();
   };
 
   return { quote, loading, getNewQuote };
