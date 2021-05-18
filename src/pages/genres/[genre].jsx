@@ -35,7 +35,7 @@ const GenrePage = () => {
       </Head>
       <h1 className="flex gap-4 mt-4 text-4xl font-medium text-gray-600 capitalize">
         <Link href="/">
-          <span className="text-4xl cursor-pointer material-icons">chevron_left</span>
+          <a className="text-4xl cursor-pointer material-icons">chevron_left</a>
         </Link>
         {genre}
       </h1>

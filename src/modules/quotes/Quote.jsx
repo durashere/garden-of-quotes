@@ -13,12 +13,12 @@ const Quote = ({ text, author, genre }) => {
       <div className="flex flex-col items-end pb-4 pr-6 leading-3 text-right">
         {author && (
           <Link href={`/authors/${author}`}>
-            <p className="inline-block text-sm font-medium text-gray-700 cursor-pointer">{`- ${author}`}</p>
+            <a className="inline-block text-sm font-medium text-gray-700 cursor-pointer">{`- ${author}`}</a>
           </Link>
         )}
         {genre && (
           <Link href={`/genres/${genre}`}>
-            <p className="text-sm text-gray-600 cursor-pointer">{`#${genre}`}</p>
+            <a className="text-sm text-gray-600 cursor-pointer">{`#${genre}`}</a>
           </Link>
         )}
       </div>
